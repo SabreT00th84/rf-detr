@@ -172,6 +172,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+.idea/
+download
+launch.json
+*.pth
+output*
 
 # Jetbrain's IDEs
 .idea/

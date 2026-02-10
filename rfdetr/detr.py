@@ -140,6 +140,12 @@ class RFDETR:
         """
         self.model.export(**kwargs)
 
+    def export_coreml(self, **kwargs):
+        """
+        Export your model to a CoreML file. (Custom)
+        """
+        return self.model.export_coreml(stds=self.stds, means=self.means, **kwargs)
+
     @staticmethod
     def _load_classes(dataset_dir) -> List[str]:
         """Load class names from a COCO or YOLO dataset directory."""
