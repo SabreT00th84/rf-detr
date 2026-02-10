@@ -1086,7 +1086,7 @@ def build_criterion_and_postprocessors(args):
                                 mask_point_sample_ratio=args.mask_point_sample_ratio)
     else:
         criterion = SetCriterion(args.num_classes + 1, matcher=matcher, weight_dict=weight_dict,
-                                ffocal_alpha=args.focal_alpha, losses=losses,
+                                focal_alpha=args.focal_alpha, losses=losses,
                                 group_detr=args.group_detr, sum_group_losses=sum_group_losses,
                                 use_varifocal_loss = args.use_varifocal_loss,
                                 use_position_supervised_loss=args.use_position_supervised_loss,
