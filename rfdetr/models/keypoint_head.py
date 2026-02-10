@@ -94,6 +94,10 @@ class KeypointHead(nn.Module):
         keypoint_outputs = []
 
         for qf in query_features:
+
+            if qf.dim() == 2:
+                qf = qf.unsqueeze(0)
+            
             B, N, _ = qf.shape
 
             # Predict coordinates

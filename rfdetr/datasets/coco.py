@@ -318,10 +318,9 @@ def make_coco_transforms_square_div_64(image_set: str, resolution: int, multi_sc
 
     raise ValueError(f'unknown {image_set}')
 
-def build_coco(image_set: str, args: Any, resolution: int) -> CocoDetection:
+def build_coco(image_set: str, args: Any, resolution: int, mode: str = 'instances') -> CocoDetection:
     root = Path(args.coco_path)
     assert root.exists(), f'provided COCO path {root} does not exist'
-    mode = 'instances'
     PATHS = {
         "train": (root / "train2017", root / "annotations" / f'{mode}_train2017.json'),
         "val": (root /  "val2017", root / "annotations" / f'{mode}_val2017.json'),

@@ -86,6 +86,8 @@ def build_roboflow(image_set: str, args: Any, resolution: int) -> torch.utils.da
 def build_dataset(image_set: str, args: Any, resolution: int) -> torch.utils.data.Dataset:
     if args.dataset_file == 'coco':
         return build_coco(image_set, args, resolution)
+    if args.dataset_file == 'coco-pose':
+        return build_coco(image_set, args, resolution, mode='person_keypoints')
     if args.dataset_file == 'o365':
         return build_o365(image_set, args, resolution)
     if args.dataset_file == 'roboflow':

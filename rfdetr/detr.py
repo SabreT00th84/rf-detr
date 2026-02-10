@@ -188,6 +188,9 @@ class RFDETR:
         elif config.dataset_file == "coco":
             class_names = COCO_CLASSES
             num_classes = 90
+        elif config.dataset_file == "coco-pose":
+            class_names = {1: "person"}
+            num_classes = 1
         else:
             raise ValueError(f"Invalid dataset file: {config.dataset_file}")
 
