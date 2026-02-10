@@ -49,6 +49,24 @@ The training loop will automatically load:
     )
     ```
 
+=== "Pose Estimation"
+
+    ```python
+    from rfdetr import RFDETRPoseNano  # Use the same size as original training
+
+    model = RFDETRPoseNano(num_keypoints=2)  # Match your keypoint config
+
+    model.train(
+        dataset_dir=<DATASET_PATH>,
+        epochs=100,
+        batch_size=4,
+        grad_accum_steps=4,
+        lr=1e-4,
+        output_dir=<OUTPUT_PATH>,
+        resume=<CHECKPOINT_PATH>
+    )
+    ```
+
 !!! tip "Resume vs Pretrain Weights"
 
     - Use `resume="checkpoint.pth"` to continue training with optimizer state
@@ -95,6 +113,24 @@ Early stopping monitors validation mAP and halts training if improvements remain
         lr=1e-4,
         output_dir="output",
         early_stopping=True,
+    )
+    ```
+
+=== "Pose Estimation"
+
+    ```python
+    from rfdetr import RFDETRPoseNano
+
+    model = RFDETRPoseNano(num_keypoints=2)
+
+    model.train(
+        dataset_dir=<DATASET_PATH>,
+        epochs=100,
+        batch_size=4,
+        grad_accum_steps=4,
+        lr=1e-4,
+        output_dir=<OUTPUT_PATH>,
+        early_stopping=True
     )
     ```
 

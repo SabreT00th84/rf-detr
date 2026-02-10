@@ -24,6 +24,11 @@ from rfdetr.detr import (
     RFDETRSegSmall,
     RFDETRSegXLarge,
     RFDETRSmall,
+    RFDETRPose,
+    RFDETRPoseNano,
+    RFDETRPoseSmall,
+    RFDETRPoseMedium,
+    RFDETRPoseLarge,
 )
 from rfdetr.platform.models import (
     RFDETR2XLarge,

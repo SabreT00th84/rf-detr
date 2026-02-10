@@ -372,8 +372,14 @@ def evaluate(model, criterion, postprocess, data_loader, base_ds, device, args=N
     )
     header = "Test:"
 
-    iou_types = ("bbox",) if not args.segmentation_head else ("bbox", "segm")
-    coco_evaluator = CocoEvaluator(base_ds, iou_types, args.eval_max_dets)
+    iou_types = ["bbox"]
+    if getattr(args, 'segmentation_head', False):
+        iou_types.append("segm")
+    num_keypoints = getattr(args, 'num_keypoints', 17)
+    if getattr(args, 'keypoint_head', False):
+        iou_types.append("keypoints")
+    iou_types = tuple(iou_types)
+    coco_evaluator = CocoEvaluator(base_ds, iou_types, num_keypoints=num_keypoints)
 
     print_freq = args.print_freq if args is not None else 10
     for samples, targets in metric_logger.log_every(data_loader, print_freq, header):
@@ -450,4 +456,7 @@ def evaluate(model, criterion, postprocess, data_loader, base_ds, device, args=N
         if "segm" in iou_types:
             results_json = coco_extended_metrics(coco_evaluator.coco_eval["segm"])
             stats["coco_eval_masks"] = coco_evaluator.coco_eval["segm"].stats.tolist()
+
+        if "keypoints" in iou_types:
+            stats["coco_eval_keypoints"] = coco_evaluator.coco_eval["keypoints"].stats.tolist()
     return stats, coco_evaluator

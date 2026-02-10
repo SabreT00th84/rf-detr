@@ -35,17 +35,31 @@ from rfdetr.util.misc import all_gather
 
 
 class CocoEvaluator(object):
-    def __init__(self, coco_gt: COCO, iou_types: List[str], max_dets: int = 100) -> None:
+    def __init__(self, coco_gt: COCO, iou_types: List[str], max_dets: int = 100, num_keypoints: int = 17) -> None:
         assert isinstance(iou_types, (list, tuple))
         coco_gt = copy.deepcopy(coco_gt)
         self.coco_gt = coco_gt
         self.max_dets = max_dets
+        self.num_keypoints = num_keypoints
+
+        # Create reverse mapping: contiguous 0-indexed labels -> original COCO category IDs
+        # This is needed because the model predicts 0-indexed class labels, but COCO
+        # evaluation expects the original category IDs from the dataset.
+        cat_ids = sorted(coco_gt.getCatIds())
+        self.continuous_to_cat_id = {i: cat_id for i, cat_id in enumerate(cat_ids)}
 
         self.iou_types = iou_types
         self.coco_eval = {}
         for iou_type in iou_types:
             self.coco_eval[iou_type] = COCOeval(coco_gt, iouType=iou_type)
             self.coco_eval[iou_type].params.maxDets = [1, 10, max_dets]
+            # Set custom sigmas for keypoint evaluation with non-COCO keypoint counts
+            if iou_type == "keypoints" and num_keypoints != 17:
+                # Use uniform sigma of 0.05 for all custom keypoints
+                # (COCO sigmas range from 0.025 to 0.107)
+                self.coco_eval[iou_type].params.kpt_oks_sigmas = np.array(
+                    [0.05] * num_keypoints
+                )
 
         self.img_ids: List[int] = []
         self.eval_imgs: Dict[str, List[COCOeval]] = {k: [] for k in iou_types}
@@ -108,7 +122,8 @@ class CocoEvaluator(object):
                 [
                     {
                         "image_id": original_id,
-                        "category_id": labels[k],
+                        # Convert 0-indexed class label back to original COCO category ID
+                        "category_id": self.continuous_to_cat_id.get(labels[k], labels[k]),
                         "bbox": box,
                         "score": scores[k],
                     }
@@ -143,7 +158,8 @@ class CocoEvaluator(object):
                 [
                     {
                         "image_id": original_id,
-                        "category_id": labels[k],
+                        # Convert 0-indexed class label back to original COCO category ID
+                        "category_id": self.continuous_to_cat_id.get(labels[k], labels[k]),
                         "segmentation": rle,
                         "score": scores[k],
                     }
@@ -169,7 +185,8 @@ class CocoEvaluator(object):
                 [
                     {
                         "image_id": original_id,
-                        "category_id": labels[k],
+                        # Convert 0-indexed class label back to original COCO category ID
+                        "category_id": self.continuous_to_cat_id.get(labels[k], labels[k]),
                         'keypoints': keypoint,
                         "score": scores[k],
                     }

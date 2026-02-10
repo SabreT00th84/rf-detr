@@ -34,6 +34,16 @@ Export your trained model to ONNX format:
     model.export()
     ```
 
+=== "Pose Estimation"
+    ```python
+    from rfdetr import RFDETRPoseNano  # Use the same size as training
+    model = RFDETRPoseNano(
+        pretrain_weights=<CHECKPOINT_PATH>,
+        num_keypoints=2,  # Match your training config
+    )
+    model.export()
+    ```
+
 This command saves the ONNX model to the `output` directory by default.
 
 ## Export Parameters
