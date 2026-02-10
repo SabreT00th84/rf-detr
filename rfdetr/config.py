@@ -338,7 +338,7 @@ class TrainConfig(BaseModel):
     ia_bce_loss: bool = True
     cls_loss_coef: float = 1.0
     num_select: int = 300
-    dataset_file: Literal["coco", "o365", "roboflow", "yolo"] = "roboflow"
+    dataset_file: Literal["coco", "o365", "roboflow", "yolo", "coco-pose"] = "roboflow"
     square_resize_div_64: bool = True
     dataset_dir: str
     output_dir: str = "output"
