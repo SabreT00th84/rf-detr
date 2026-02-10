@@ -137,12 +137,10 @@ addopts = [
 ]
 markers = [
     "gpu: tests that require GPU or are slow on CPU",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
 testpaths = ["tests"]
 pythonpath = ["."]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-]
 
 [tool.codespell]
 skip = "*.pth"
