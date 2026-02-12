@@ -371,16 +371,16 @@ def patched_pycocotools_summarize(self):
         return stats
     def _summarizeKps():
         stats = np.zeros((10,))
-        stats[0] = _summarize(1, maxDets=20)
-        stats[1] = _summarize(1, maxDets=20, iouThr=.5)
-        stats[2] = _summarize(1, maxDets=20, iouThr=.75)
-        stats[3] = _summarize(1, maxDets=20, areaRng='medium')
-        stats[4] = _summarize(1, maxDets=20, areaRng='large')
-        stats[5] = _summarize(0, maxDets=20)
-        stats[6] = _summarize(0, maxDets=20, iouThr=.5)
-        stats[7] = _summarize(0, maxDets=20, iouThr=.75)
-        stats[8] = _summarize(0, maxDets=20, areaRng='medium')
-        stats[9] = _summarize(0, maxDets=20, areaRng='large')
+        stats[0] = _summarize(1, maxDets=self.params.maxDets[2])
+        stats[1] = _summarize(1, iouThr=.5, maxDets=self.params.maxDets[2])
+        stats[2] = _summarize(1, iouThr=.75, maxDets=self.params.maxDets[2])
+        stats[3] = _summarize(1, areaRng='medium', maxDets=self.params.maxDets[2])
+        stats[4] = _summarize(1, areaRng='large', maxDets=self.params.maxDets[2])
+        stats[5] = _summarize(0, maxDets=self.params.maxDets[2])
+        stats[6] = _summarize(0, iouThr=.5, maxDets=self.params.maxDets[2])
+        stats[7] = _summarize(0, iouThr=.75, maxDets=self.params.maxDets[2])
+        stats[8] = _summarize(0, areaRng='medium', maxDets=self.params.maxDets[2])
+        stats[9] = _summarize(0, areaRng='large', maxDets=self.params.maxDets[2])
         return stats
     if not self.eval:
         raise Exception('Please run accumulate() first')
