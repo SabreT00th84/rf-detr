@@ -132,7 +132,7 @@ from rfdetr.util.coco_classes import COCO_CLASSES
 
 model = RFDETRMedium()
 
-image = Image.open(requests.get("https://media.roboflow.com/dog.jpg", stream=True).raw)
+image = Image.open("https://media.roboflow.com/dog.jpg")
 detections = model.predict(image, threshold=0.5)
 
 labels = [f"{COCO_CLASSES[class_id]}" for class_id in detections.class_id]
@@ -156,7 +156,7 @@ from inference import get_model
 
 model = get_model("rfdetr-medium")
 
-image = Image.open(requests.get("https://media.roboflow.com/dog.jpg", stream=True).raw)
+image = Image.open("https://media.roboflow.com/dog.jpg")
 predictions = model.infer(image, confidence=0.5)[0]
 detections = sv.Detections.from_inference(predictions)
 
@@ -190,7 +190,7 @@ from rfdetr.util.coco_classes import COCO_CLASSES
 
 model = RFDETRSegMedium()
 
-image = Image.open(requests.get("https://media.roboflow.com/dog.jpg", stream=True).raw)
+image = Image.open("https://media.roboflow.com/dog.jpg")
 detections = model.predict(image, threshold=0.5)
 
 labels = [f"{COCO_CLASSES[class_id]}" for class_id in detections.class_id]
@@ -214,7 +214,7 @@ from inference import get_model
 
 model = get_model("rfdetr-seg-medium")
 
-image = Image.open(requests.get("https://media.roboflow.com/dog.jpg", stream=True).raw)
+image = Image.open("https://media.roboflow.com/dog.jpg")
 predictions = model.infer(image, confidence=0.5)[0]
 detections = sv.Detections.from_inference(predictions)
 
@@ -224,14 +224,14 @@ annotated_image = sv.LabelAnnotator().annotate(annotated_image, detections)
 
 </details>
 
-| Size | RF-DETR package class | Inference package alias | COCO AP<sub>50</sub> | COCO AP<sub>50:95</sub> | Latency (ms) | Params (M) | Resolution |  License   |
-| :--: | :-------------------: | :---------------------- | :------------------: | :---------------------: | :----------: | :--------: | :--------: | :--------: |
-|  N   |    `RFDETRSegNano`    | `rfdetr-seg-nano`       |         63.0         |          40.3           |     3.4      |    33.6    |  312x312   | Apache 2.0 |
-|  S   |   `RFDETRSegSmall`    | `rfdetr-seg-small`      |         66.2         |          43.1           |     4.4      |    33.7    |  384x384   | Apache 2.0 |
-|  M   |   `RFDETRSegMedium`   | `rfdetr-seg-medium`     |         68.4         |          45.3           |     5.9      |    35.7    |  432x432   | Apache 2.0 |
-|  L   |   `RFDETRSegLarge`    | `rfdetr-seg-large`      |         70.5         |          47.1           |     8.8      |    36.2    |  504x504   | Apache 2.0 |
-|  XL  |   `RFDETRSegXLarge`   | `rfdetr-seg-xlarge`     |         72.2         |          48.8           |     13.5     |    38.1    |  624x624   | Apache 2.0 |
-| 2XL  |  `RFDETRSeg2XLarge`   | `rfdetr-seg-2xlarge`    |         73.1         |          49.9           |     21.8     |    38.6    |  768x768   | Apache 2.0 |
+| Size | RF-DETR package class | Inference package alias | COCO AP<sub>50</sub> | COCO AP<sub>50:95</sub> | Latency (ms) | Params (M) | Resolution |
+| :--: | :-------------------: | :---------------------- | :------------------: | :---------------------: | :----------: | :--------: | :--------: |
+|  N   |    `RFDETRSegNano`    | `rfdetr-seg-nano`       |         63.0         |          40.3           |     3.4      |    33.6    |  312x312   |
+|  S   |   `RFDETRSegSmall`    | `rfdetr-seg-small`      |         66.2         |          43.1           |     4.4      |    33.7    |  384x384   |
+|  M   |   `RFDETRSegMedium`   | `rfdetr-seg-medium`     |         68.4         |          45.3           |     5.9      |    35.7    |  432x432   |
+|  L   |   `RFDETRSegLarge`    | `rfdetr-seg-large`      |         70.5         |          47.1           |     8.8      |    36.2    |  504x504   |
+|  XL  |   `RFDETRSegXLarge`   | `rfdetr-seg-xlarge`     |         72.2         |          48.8           |     13.5     |    38.1    |  624x624   |
+| 2XL  |  `RFDETRSeg2XLarge`   | `rfdetr-seg-2xlarge`    |         73.1         |          49.9           |     21.8     |    38.6    |  768x768   |
 
 ### Train Models
 

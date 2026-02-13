@@ -9,10 +9,10 @@ import os
 import warnings
 from collections import defaultdict
 from copy import deepcopy
-from logging import getLogger
 from typing import List, Union
 
 import numpy as np
+import requests
 import supervision as sv
 import torch
 import torchvision.transforms.functional as F
@@ -21,6 +21,7 @@ from PIL import Image
 
 from rfdetr.datasets.coco import is_valid_coco_dataset
 from rfdetr.datasets.yolo import is_valid_yolo_dataset
+from rfdetr.util.logger import get_logger
 
 try:
     torch.set_float32_matmul_precision('high')
@@ -55,7 +56,8 @@ from rfdetr.main import Model, download_pretrain_weights
 from rfdetr.util.coco_classes import COCO_CLASSES
 from rfdetr.util.metrics import MetricsPlotSink, MetricsTensorBoardSink, MetricsWandBSink
 
-logger = getLogger(__name__)
+logger = get_logger()
+
 class RFDETR:
     """
     The base RF-DETR class implements the core methods for training RF-DETR models,
@@ -288,7 +290,7 @@ class RFDETR:
         predictions.
 
         This method accepts a single image or a list of images in various formats
-        (file path, PIL Image, NumPy array, or torch.Tensor). The images should be in
+        (file path, image url, PIL Image, NumPy array, or torch.Tensor). The images should be in
         RGB channel order. If a torch.Tensor is provided, it must already be normalized
         to values in the [0, 1] range and have the shape (C, H, W).
 
@@ -325,6 +327,8 @@ class RFDETR:
         for img in images:
 
             if isinstance(img, str):
+                if img.startswith("http"):
+                    img = requests.get(img, stream=True).raw
                 img = Image.open(img)
 
             if not isinstance(img, torch.Tensor):

@@ -32,8 +32,8 @@ from typing import Any, Callable, Dict, List, Sequence, Union
 import numpy as np
 import torch
 import torch.nn as nn
-import tqdm
 from numpy import prod
+from tqdm.auto import tqdm
 
 Handle = Callable[[List[Any], List[Any]], Union[typing.Counter[str], Number]]
 
@@ -589,7 +589,8 @@ def fmt_res(data: np.ndarray) -> Dict[str, float]:
 
 
 def benchmark(model: torch.nn.Module, dataset: Sequence[Any], output_dir: Any) -> Dict[str, Any]:
-    print("Get model size, FLOPs, and FPS")
+    logger = logging.getLogger("rf-detr")
+    logger.info("Get model size, FLOPs, and FPS")
     # import pdb; pdb.set_trace()
     _outputs = {}
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -609,7 +610,7 @@ def benchmark(model: torch.nn.Module, dataset: Sequence[Any], output_dir: Any) -
     with torch.no_grad():
         tmp = []
         tmp2 = []
-        for imgid, img in enumerate(tqdm.tqdm(images)):
+        for imgid, img in enumerate(tqdm(images)):
             inputs = [img.to("cuda")]
             res = flop_count(model, (inputs,))
             t = measure_time(model, inputs)
